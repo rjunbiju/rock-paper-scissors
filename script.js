@@ -51,6 +51,7 @@ function game(){
         }
         else  {
             i--;
+            roundNumber--;
             console.log ("Invalid option. Choose rock, paper, or scissors!");
         }
     }
