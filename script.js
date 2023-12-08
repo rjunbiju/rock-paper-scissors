@@ -11,9 +11,6 @@ function getComputerChoice(){
 function playRound(playerSelection,computerSelection){
     let playerChoice = playerSelection.toLowerCase();
 
-    if (playerChoice != "rock" && playerChoice != "scissors" && playerChoice != "paper")
-        return "Invalid option. Choose rock, paper, or scissors!";
-
     if ((playerChoice == "rock" && computerSelection == "rock") 
         || (playerChoice == "scissors" && computerSelection == "scissors")
         || (playerChoice == "paper" && computerSelection == "paper"))
@@ -27,41 +24,74 @@ else
 }
 
 
-
-
-function game(){
-    let playerScore = 0;
-    let computerScore = 0;
-    let roundNumber = 1;
-    for (let i =0; i < 5; i++){
-        const playerSelection = prompt("Choose rock, paper, or scissors!");
+const btns = document.querySelectorAll('button');
+let btnArray = Array.from(btns);
+for ( const btn of btnArray){
+   btn.addEventListener('click',game);
+}
+let playerScore = 0;
+let computerScore = 0;
+let roundNumber = 1;
+let winResult;
+let gameResult=document.createElement('p');
+const board = document.getElementById("resultsDisplay");
+var linebreak = document.createElement('br');
+function game(evt){
+    
+    if(roundNumber <=5){
+    
+    board.textContent='';
         const computerSelection = getComputerChoice();
-        console.log ("ROUND " + roundNumber + " result:");
-        roundNumber++; 
+        const playerSelection= (evt.target.innerText);
+       let roundResult = document.createTextNode("ROUND " + roundNumber + " result:");
+       
+        board.appendChild(roundResult);
+         
+
         if(playRound(playerSelection, computerSelection) == "You win!"){
             playerScore++;
-            console.log("You won! You have " + playerScore + " points, and the computer has " + computerScore + " points");
+
+            winResult = document.createTextNode(("You won! You:" + playerScore + " Computer: " + computerScore));
+            
+            board.appendChild(linebreak);
+            board.appendChild(winResult);
+            roundNumber++;
         }
         else if (playRound(playerSelection, computerSelection) == "You lose!"){
             computerScore++;
-            console.log("You lose! You have " + playerScore + " points, and the computer has " + computerScore + " points")
+            winResult=document.createTextNode(("You lose! You:" + playerScore + " Computer: " + computerScore));
+            
+            board.appendChild(linebreak);
+            board.appendChild(winResult);
+            roundNumber++;
         }
         else if (playRound(playerSelection, computerSelection) == "You tied!"){
-            console.log("You tied! You have " + playerScore + " points, and the computer has " + computerScore + " points")
-        }
-        else  {
-            i--;
-            roundNumber--;
-            console.log ("Invalid option. Choose rock, paper, or scissors!");
+            winResult=document.createTextNode(("You tied! Play Again. You:" + playerScore + " Computer: " + computerScore));
+            
+            board.appendChild(linebreak);
+            board.appendChild(winResult);
         }
     }
-    if (playerScore < computerScore){
-        return "GAME OVER. You lost!";
-    }
-    else if (playerScore > computerScore)
-        return "GAME OVER. You won!";
-    else    
-        return "GAME OVER. You tied!";
+    console.log(roundNumber);
+if(roundNumber == 6){
+    roundNumber++;
+if (playerScore < computerScore){
+    
+    let textNode= document.createTextNode("GAME OVER. You lost!");
+    gameResult.appendChild(textNode);
+    board.appendChild(gameResult);
+}
+else if (playerScore > computerScore){
+    let textNode=document.createTextNode("GAME OVER. You won!");
+    gameResult.appendChild(textNode);
+    board.appendChild(gameResult);
+}
+else{
+    let textNode=document.createTextNode("GAME OVER. You tied!");
+    gameResult.appendChild(textNode);
+    board.appendChild(gameResult);
+}
 }
 
-console.log(game()); 
+}
+
