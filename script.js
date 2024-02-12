@@ -53,7 +53,9 @@ function game(evt){
     roundDiv.textContent='';
     winDisplay.textContent='';
     const computerSelection = getComputerChoice();
-    const playerSelection= (evt.target.innerText);
+    const playerSelection= (evt.target.innerText.toLowerCase());
+    console.log(playerSelection);
+    console.log(computerSelection);
     computerChoiceImg.src="images/" + computerSelection + ".png";
     playerChoiceImg.src="images/" + playerSelection + ".png";
     imgHolder.appendChild(playerChoiceImg);
