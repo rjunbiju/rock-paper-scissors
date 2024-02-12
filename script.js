@@ -26,6 +26,10 @@ else
 
 const btns = document.querySelectorAll('button');
 let btnArray = Array.from(btns);
+let playerChoiceImg = document.createElement('img');
+let computerChoiceImg = document.createElement('img');
+let imgHolder = document.getElementById("imageHolder")
+
 for ( const btn of btnArray){
    btn.addEventListener('click',game);
 }
@@ -33,65 +37,74 @@ let playerScore = 0;
 let computerScore = 0;
 let roundNumber = 1;
 let winResult;
+let winOrLoss;
+let isClicked = false;
 let gameResult=document.createElement('p');
 const board = document.getElementById("resultsDisplay");
+const roundDiv = document.getElementById("roundHolder");
+const winDisplay = document.getElementById("scoreStatus");
 var linebreak = document.createElement('br');
+roundDiv.textContent='PICK ROCK, PAPER OR SCISSORS'
+
 function game(evt){
-    
-    if(roundNumber <=5){
+    if(playerScore != 5 && computerScore !=5){
     
     board.textContent='';
-        const computerSelection = getComputerChoice();
-        const playerSelection= (evt.target.innerText);
-       let roundResult = document.createTextNode("ROUND " + roundNumber + " result:");
-       
-        board.appendChild(roundResult);
+    roundDiv.textContent='';
+    winDisplay.textContent='';
+    const computerSelection = getComputerChoice();
+    const playerSelection= (evt.target.innerText);
+    computerChoiceImg.src="images/" + computerSelection + ".png";
+    playerChoiceImg.src="images/" + playerSelection + ".png";
+    imgHolder.appendChild(playerChoiceImg);
+    imgHolder.appendChild(computerChoiceImg);
+
+    let roundResult = document.createTextNode("ROUND " + roundNumber + ":");
+    roundDiv.appendChild(roundResult);
          
 
         if(playRound(playerSelection, computerSelection) == "You win!"){
             playerScore++;
 
-            winResult = document.createTextNode(("You won! You:" + playerScore + " Computer: " + computerScore));
+            winOrLoss=document.createTextNode("You win!");
+            winResult = document.createTextNode(("You:" + playerScore + " Computer: " + computerScore));
             
-            board.appendChild(linebreak);
+            winDisplay.appendChild(winOrLoss);
             board.appendChild(winResult);
             roundNumber++;
         }
         else if (playRound(playerSelection, computerSelection) == "You lose!"){
             computerScore++;
-            winResult=document.createTextNode(("You lose! You:" + playerScore + " Computer: " + computerScore));
+            winOrLoss=document.createTextNode("You lose!");
+            winResult=document.createTextNode(("You:" + playerScore + " Computer: " + computerScore));
             
-            board.appendChild(linebreak);
+            winDisplay.appendChild(winOrLoss);
             board.appendChild(winResult);
             roundNumber++;
         }
         else if (playRound(playerSelection, computerSelection) == "You tied!"){
-            winResult=document.createTextNode(("You tied! Play Again. You:" + playerScore + " Computer: " + computerScore));
-            
-            board.appendChild(linebreak);
+            winOrLoss=document.createTextNode("You tied! Play Again.");
+            winResult=document.createTextNode(("You:" + playerScore + " Computer: " + computerScore));
+            winDisplay.appendChild(winOrLoss);
             board.appendChild(winResult);
         }
     }
     console.log(roundNumber);
-if(roundNumber == 6){
-    roundNumber++;
-if (playerScore < computerScore){
-    
+if(computerScore == 5 && isClicked == false){
+    isClicked = true;
+    winDisplay.textContent='';
     let textNode= document.createTextNode("GAME OVER. You lost!");
     gameResult.appendChild(textNode);
-    board.appendChild(gameResult);
+    winDisplay.appendChild(gameResult);
 }
-else if (playerScore > computerScore){
+else if (playerScore == 5 && isClicked == false){
+    isClicked = true;
+    winDisplay.textContent='';
     let textNode=document.createTextNode("GAME OVER. You won!");
     gameResult.appendChild(textNode);
-    board.appendChild(gameResult);
+    winDisplay.appendChild(gameResult);
 }
-else{
-    let textNode=document.createTextNode("GAME OVER. You tied!");
-    gameResult.appendChild(textNode);
-    board.appendChild(gameResult);
-}
-}
+
 
 }
 
